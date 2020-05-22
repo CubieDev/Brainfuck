@@ -28,8 +28,8 @@ class Interpreter:
             Minus(),
             Dot(),
             Comma(),
-            Comp(),
-            Loop()
+            Loop(),
+            Comp()
         ]
 
         # Initialize state variables
@@ -56,5 +56,5 @@ class Interpreter:
         
 if __name__ == "__main__":
     #program = "++>,<[->+<]>."
-    program = "."
+    program = "[<->]"
     Interpreter(program)

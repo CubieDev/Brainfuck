@@ -30,5 +30,15 @@ class Comp(Rule):
         super().applicable(state)
         return len(state.s) > 1
     
+    def apply(self, state: State) -> State:
+        # Check whether the state is an actual State object, and the statement inside is of the right form.
+        if not self.applicable(state):
+            raise Exception(f"State does not support using the {self} rule")
+        
+        # There exist two Comp rules because where we choose to split up the statement can be arbitrary,
+        # as regardless of where we split we always get the same execution.
+        # However, in our implementation, we can go for the simplest option which is to just take the first
+        # legal statement and try to execute that.
+
     def __repr__(self):
         return "{Comp}"
