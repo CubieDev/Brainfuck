@@ -40,6 +40,7 @@ class Interpreter:
         self.parse(initial_state)
     
     def parse(self, state: State):
+        # For now this only applies one rule
         print(state)
         for rule in self.rules:
             if rule.applicable(state):
@@ -52,5 +53,6 @@ class Interpreter:
         print(new_state, rule)
         
 if __name__ == "__main__":
-    program = "++>,<[->+<]>."
+    #program = "++>,<[->+<]>."
+    program = "+"
     Interpreter(program)

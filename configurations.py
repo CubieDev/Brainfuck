@@ -15,16 +15,22 @@ class State(Configuration):
         self.i = i
         self.o = o
     
+    def unpack(self) -> (Statement, Array, Pointer, Input, Output):
+        return self.s, self.a, self.p, self.i, self.o
+
     def __repr__(self):
         return f"({self.s} | {self.a} | {self.p} | {self.i} | {self.o})"
 
 class FinalState(Configuration):
-    def __init__(self):
+    def __init__(self, a: Array, p: Pointer, i: Input, o: Output):
         super().__init__()
         self.a = a
         self.p = p
         self.i = i
         self.o = o
+    
+    def unpack(self) -> (Array, Pointer, Input, Output):
+        return self.a, self.p, self.i, self.o
 
     def __repr__(self):
         return f"({self.a} | {self.p} | {self.i} | {self.o})"
