@@ -56,5 +56,5 @@ class Interpreter:
         
 if __name__ == "__main__":
     #program = "++>,<[->+<]>."
-    program = "+"
+    program = "."
     Interpreter(program)
