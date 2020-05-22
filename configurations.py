@@ -19,7 +19,7 @@ class State(Configuration):
         return self.s, self.a, self.p, self.i, self.o
 
     def __repr__(self):
-        return f"({self.s} | {self.a} | {self.p} | {repr(self.i)} | {repr(self.o)})"
+        return f"({self.s} | {dict(self.a)} | {self.p} | {repr(self.i)} | {repr(self.o)})"
 
 class FinalState(Configuration):
     def __init__(self, a: Array, p: Pointer, i: Input, o: Output):
@@ -33,4 +33,4 @@ class FinalState(Configuration):
         return self.a, self.p, self.i, self.o
 
     def __repr__(self):
-        return f"({self.a} | {self.p} | {repr(self.i)} | {repr(self.o)})"
+        return f"({dict(self.a)} | {self.p} | {repr(self.i)} | {repr(self.o)})"

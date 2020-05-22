@@ -1,4 +1,5 @@
 
+from collections import defaultdict
 
 from constants      import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
@@ -32,7 +33,7 @@ class Interpreter:
         ]
 
         # Initialize state variables
-        a = dict()
+        a = defaultdict(lambda: 0)
         p = 0
         o = ""
         initial_state = State(s, a, p, i, o)
@@ -49,6 +50,7 @@ class Interpreter:
                 break
         else:
             # Stuck
+            print("Stuck state reached")
             return
         print(new_state, rule)
         

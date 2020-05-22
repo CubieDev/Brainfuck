@@ -20,10 +20,7 @@ class Plus(Axiom):
         # Unpack the state
         s, a, p, i, o = state.unpack()
         # Apply the Plus rule by incrementing the value currently pointed at
-        try:
-            a[p] += 1
-        except KeyError:
-            a[p] = 1
+        a[p] += 1
         # Return a FinalState with the correct information
         return FinalState(a, p, i, o)
 
