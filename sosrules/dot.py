@@ -19,7 +19,8 @@ class Dot(Axiom):
         
         # Unpack the state
         s, a, p, i, o = state.unpack()
-        # Apply the Left rule by decrementing data pointer
+        # Apply the Dot rule by adding the char version of the currently
+        # pointed at value to the output
         o += chr(a[p])
         # Return a FinalState with the correct information
         return FinalState(a, p, i, o)

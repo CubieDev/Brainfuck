@@ -12,6 +12,9 @@ from sosrules.comma import Comma
 from sosrules.comp  import Comp
 from sosrules.loop  import Loop
 
+class EmptyInputException(Exception):
+    pass
+
 class Interpreter:
     def __init__(self, s: Statement, i: Input = ""):
         super().__init__()
@@ -29,7 +32,7 @@ class Interpreter:
             Dot(),
             Comma(),
             Loop(),
-            Comp()
+            Comp(self) # Composition takes an instance of Interpreter as it will want to execute a rule.
         ]
 
         # Initialize state variables
@@ -42,19 +45,29 @@ class Interpreter:
     
     def parse(self, state: State):
         # For now this only applies one rule
-        print(state)
+        #print(state)
+        #print(new_state, rule)
+        while True:
+            state = self.apply_rule(state)
+            if isinstance(state, FinalState):
+                break
+            #breakpoint()
+    
+    def apply_rule(self, state: State):
         for rule in self.rules:
             if rule.applicable(state):
                 print(rule)
                 new_state = rule.apply(state)
-                break
+                print(new_state)
+                return new_state
         else:
             # Stuck
             print("Stuck state reached")
-            return
-        print(new_state, rule)
-        
+            raise EmptyInputException()
+
 if __name__ == "__main__":
+    #i = "a"
     #program = "++>,<[->+<]>."
-    program = "[<->]"
+    #program = "[<->]+"
+    program = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
     Interpreter(program)

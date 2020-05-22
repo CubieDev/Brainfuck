@@ -23,8 +23,9 @@ class Comp(Rule):
         def __repr__(self):
             return "{CompTwo}"
 
-    def __init__(self):
+    def __init__(self, interpreter):
         super().__init__()
+        self.interpreter = interpreter
     
     def applicable(self, state: State) -> bool:
         super().applicable(state)
@@ -39,6 +40,43 @@ class Comp(Rule):
         # as regardless of where we split we always get the same execution.
         # However, in our implementation, we can go for the simplest option which is to just take the first
         # legal statement and try to execute that.
+        # This method will produce the smallest possible trees and chains.
+
+        # Unpack the state values
+        s, a, p, i, o = state.unpack()
+        # Get first legal statement
+        index = 1
+        if s[0] == "[":
+            count = 1
+            # Get the corresponding ]
+            for c in s[1:]:
+                if c == "]":
+                    count -= 1
+                elif c == "[":
+                    count += 1
+                index += 1
+                if count <= 0:
+                    break
+            #try:
+            #    index = s.rindex("]") + 1
+            #except ValueError:
+            #    raise Exception("Syntax error detected in program, missing ]")
+        # Split the statement into two separate statements
+        s1 = s[:index]
+        s2 = s[index:]
+
+        # Get the new state from applying a rule
+        new_state = self.interpreter.apply_rule(State(s1, a, p, i, o))
+        # If the new state is not final, then we append the remaining statement
+        # back to statement s2
+        if isinstance(new_state, State):
+            # Unpack the new state values
+            ns, na, np, ni, no = new_state.unpack()
+            s2 = ns + s2
+        else:
+            na, np, ni, no = new_state.unpack()
+        # Otherwise, we simply keep s2 and use the new state values
+        return State(s2, na, np, ni, no)
 
     def __repr__(self):
         return "{Comp}"
