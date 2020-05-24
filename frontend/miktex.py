@@ -12,6 +12,8 @@ class OSNotSupported(Exception):
     pass
 
 class MikTex():
+    """Statically processes all variables required to spawn a child process for miktex"""
+
     _engine = "pdflatex"
     _path = environ['PATH'].split(';')
     _exec = "{0}{1}".format(_engine,".exe") if ("win" in platform) else (_engine if ("linux" in platform) else "")
