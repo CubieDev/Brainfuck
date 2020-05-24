@@ -1,5 +1,6 @@
 
 from collections import defaultdict
+import re
 
 from constants      import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
@@ -33,6 +34,9 @@ class Interpreter:
             Loop(),
             Comp(self) # Composition takes an instance of Interpreter as it will want to execute a rule.
         ]
+
+        # Strip the program of characters that aren't in the language
+        s = re.sub("[^\<\>\,\.\[\]\-\+]", "", s)
 
         # Initialize state variables
         a = defaultdict(lambda: 0)
