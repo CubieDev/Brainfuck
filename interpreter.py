@@ -17,7 +17,6 @@ class EmptyInputException(Exception):
 
 class Interpreter:
     def __init__(self, s: Statement, i: Input = ""):
-        super().__init__()
         if not isinstance(s, Statement):
             raise TypeError("Program must be passed as a str object.")
         if not isinstance(i, Input):

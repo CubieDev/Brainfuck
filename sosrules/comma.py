@@ -5,8 +5,7 @@ from rules import Axiom, Rule
 
 # ,
 class Comma(Axiom):
-    def __init__(self):
-        super().__init__()
+    """The comma rule interprets a character from the input and stores it at p in the array"""
     
     def applicable(self, state: State) -> bool:
         super().applicable(state)
