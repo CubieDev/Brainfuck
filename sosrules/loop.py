@@ -60,8 +60,21 @@ class Loop(Base):
     
     def applicable(self, state: State) -> bool:
         super().applicable(state)
-        return state.s.startswith("[") and state.s.endswith("]")
-    
+        if state.s.startswith("[") and state.s.endswith("]"):
+            # For the statement to be applicable, the first and last bracket must be related,
+            # eg not "[]+[]"
+            # we can confirm this by checking whether the statement with 
+            # these two brackets removed is valid or not.
+            count = 0
+            for c in state.s[1:-1]:
+                if c == "[":
+                    count += 1
+                elif c == "]":
+                    count -= 1
+                if count < 0:
+                    return False
+            return True
+
     def apply(self, state: State) -> Union[State, FinalState]: # Read as: Either State or FinalState
         # Check whether the state is an actual State object, and the statement inside is of the right form.
         if not self.applicable(state):
