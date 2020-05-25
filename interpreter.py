@@ -17,7 +17,7 @@ class EmptyInputException(Exception):
     pass
 
 class Interpreter:
-    def __init__(self, s: Statement, i: Input = ""):
+    def __init__(self, s: Statement = "", i: Input = ""):
         if not isinstance(s, Statement):
             raise TypeError("Program must be passed as a str object.")
         if not isinstance(i, Input):
@@ -44,8 +44,18 @@ class Interpreter:
         o = ""
         initial_state = State(s, a, p, i, o)
 
-        self.parse(initial_state)
+        if(len(s) > 0):
+            self.parse(initial_state)
     
+    #TODO: fix this
+    def initialize(self, program, input=""):
+        if not isinstance(s, Statement):
+            raise TypeError("Program must be passed as a str object.")
+        if not isinstance(i, Input):
+            raise TypeError("Input must be passed as a str object.")
+        s = re.sub("[^\<\>\,\.\[\]\-\+]", "", s)
+        #etc
+
     def parse(self, state: State):
         # For now this only applies one rule
         #print(state)

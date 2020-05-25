@@ -1,12 +1,13 @@
 [tool.poetry]
-name = "SR Interpreter"
+name = "Interpreter"
 version = "0.1"
-description = "An interpreter for Brainfuck programs"
+description = "None"
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+pillow = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 
