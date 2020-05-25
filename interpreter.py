@@ -1,10 +1,12 @@
 
 from collections import defaultdict
 import re
+from typing import Union
 
 from constants      import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
 from sequence       import Sequence
+from rules          import Base
 from sosrules.right import Right
 from sosrules.left  import Left
 from sosrules.plus  import Plus
@@ -64,19 +66,19 @@ class Interpreter:
         #print(state)
         #print(new_state, rule)
         while True:
-            state, rule = self.apply_rule(state)
-            print(f"{rule}: {state}")
+            state, rule = self.apply_rule(state, new=True)
+            self.sequence.add_after(state, rule)
             if isinstance(state, FinalState):
                 break
             #breakpoint()
     
-    def apply_rule(self, state: State):
+    def apply_rule(self, state: State, new = False) -> (Union[State, FinalState], Base):
         for rule in self.rules:
             if rule.applicable(state):
-                self.sequence.add(state, rule)
-                new_state = rule.apply(state)
-                self.sequence.add_after(new_state)
-                return new_state, rule
+                if new:
+                    self.sequence.add(state)
+                new_state, applied_rule = rule.apply(state)
+                return new_state, applied_rule
         else:
             # Stuck
             print("Stuck state reached")
@@ -88,4 +90,5 @@ if __name__ == "__main__":
     #program = "[<->]+"
     #program = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
     ip = Interpreter(program, i)
+    ip.sequence.output()
     breakpoint()

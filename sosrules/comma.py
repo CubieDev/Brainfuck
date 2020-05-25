@@ -1,7 +1,7 @@
 
 from constants import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
-from rules import Axiom, Rule
+from rules import Axiom, Rule, Base
 
 # ,
 class Comma(Axiom):
@@ -11,7 +11,7 @@ class Comma(Axiom):
         super().applicable(state)
         return state.s == "," and len(state.i) > 0
     
-    def apply(self, state: State) -> FinalState:
+    def apply(self, state: State) -> (FinalState, Base):
         # Check whether the state is an actual State object, and the statement inside is of the right form.
         if not self.applicable(state):
             raise Exception(f"State does not support using the {self} rule")
@@ -24,7 +24,10 @@ class Comma(Axiom):
         a[p] = ord(i[0])
         i = i[1:]
         # Return a FinalState with the correct information
-        return FinalState(a, p, i, o)
+        return FinalState(a, p, i, o), self
 
     def __repr__(self):
         return "{Comma}"
+    
+    def tex(self) -> str:
+        return "\\commasos"

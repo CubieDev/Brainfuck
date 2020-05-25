@@ -1,7 +1,7 @@
 
 from constants import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
-from rules import Axiom, Rule
+from rules import Axiom, Rule, Base
 
 # .
 class Dot(Axiom):
@@ -12,7 +12,7 @@ class Dot(Axiom):
         super().applicable(state)
         return state.s == "."
     
-    def apply(self, state: State) -> FinalState:
+    def apply(self, state: State) -> (FinalState, Base):
         # Check whether the state is an actual State object, and the statement inside is of the right form.
         if not self.applicable(state):
             raise Exception(f"State does not support using the {self} rule")
@@ -23,7 +23,10 @@ class Dot(Axiom):
         # pointed at value to the output
         o += chr(a[p])
         # Return a FinalState with the correct information
-        return FinalState(a, p, i, o)
+        return FinalState(a, p, i, o), self
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{Dot}"
+    
+    def tex(self) -> str:
+        return "\\dotsos"

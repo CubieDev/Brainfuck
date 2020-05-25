@@ -18,7 +18,7 @@ class Loop(Base):
         def applicable(self, state: State) -> bool:
             return state.a[state.p] == 0
 
-        def apply(self, state: State) -> FinalState:
+        def apply(self, state: State) -> (FinalState, Base):
             # Check whether the state is an actual State object, and the statement inside is of the right form.
             if not self.applicable(state):
                 raise Exception(f"State does not support using the {self} rule")
@@ -26,10 +26,13 @@ class Loop(Base):
             # Unpack the information from the given state
             s, a, p, i, o = state.unpack()
             # And create a FinalState with these state values
-            return FinalState(a, p, i, o)
+            return FinalState(a, p, i, o), self
 
-        def __repr__(self):
+        def __repr__(self) -> str:
             return "{LoopEnd}"
+        
+        def tex(self) -> str:
+            return "\\emptyloopsos"
     
     class LoopBody(Rule):
         def __init__(self):
@@ -38,7 +41,7 @@ class Loop(Base):
         def applicable(self, state: State) -> bool:
             return state.a[state.p] != 0
         
-        def apply(self, state: State) -> State:
+        def apply(self, state: State) -> (State, Base):
             # Check whether the state is an actual State object, and the statement inside is of the right form.
             if not self.applicable(state):
                 raise Exception(f"State does not support using the {self} rule")
@@ -48,10 +51,13 @@ class Loop(Base):
             # And create a State by prepending S to the [S]. 
             # We can do this by slicing off the first and last index from s
             s = s[1:-1] + s
-            return State(s, a, p, i, o)
+            return State(s, a, p, i, o), self
 
-        def __repr__(self):
+        def __repr__(self) -> str:
             return "{LoopBody}"
+        
+        def tex(self) -> str:
+            return "\\loopsos"
 
     def __init__(self):
         super().__init__()
@@ -75,7 +81,7 @@ class Loop(Base):
                     return False
             return True
 
-    def apply(self, state: State) -> Union[State, FinalState]: # Read as: Either State or FinalState
+    def apply(self, state: State) -> (Union[State, FinalState], Base): # Read as: Either State or FinalState, alongside Base
         # Check whether the state is an actual State object, and the statement inside is of the right form.
         if not self.applicable(state):
             raise Exception(f"State does not support using the {self} rule")
@@ -88,5 +94,7 @@ class Loop(Base):
             return self.le.apply(state)
         raise Exception("Neither Loop Rule seems applicable.")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{Loop}"
+
+    # tex is not implemented for this class

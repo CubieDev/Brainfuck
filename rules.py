@@ -10,10 +10,13 @@ class Base(object):
         if not isinstance(state, State):
             raise TypeError("You can only check applicability of this rule using a State instance.")
 
+    def tex(self) -> str:
+        raise NotImplementedError
+
 class Axiom(Base):
-    def apply(self, state: State) -> FinalState:
+    def apply(self, state: State) -> (FinalState, Base):
         raise NotImplementedError
     
 class Rule(Base):
-    def apply(self, state: State) -> State:
+    def apply(self, state: State) -> (State, Base):
         raise NotImplementedError
