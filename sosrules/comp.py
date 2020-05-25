@@ -66,7 +66,7 @@ class Comp(Rule):
         s2 = s[index:]
 
         # Get the new state from applying a rule
-        new_state = self.interpreter.apply_rule(State(s1, a, p, i, o))
+        new_state, rule = self.interpreter.apply_rule(State(s1, a, p, i, o))
         # If the new state is not final, then we append the remaining statement
         # back to statement s2
         if isinstance(new_state, State):

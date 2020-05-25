@@ -4,6 +4,7 @@ import re
 
 from constants      import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
+from sequence       import Sequence
 from sosrules.right import Right
 from sosrules.left  import Left
 from sosrules.plus  import Plus
@@ -35,6 +36,8 @@ class Interpreter:
             Comp(self) # Composition takes an instance of Interpreter as it will want to execute a rule.
         ]
 
+        self.sequence = Sequence()
+
         # Strip the program of characters that aren't in the language
         s = re.sub("[^\<\>\,\.\[\]\-\+]", "", s)
 
@@ -61,7 +64,8 @@ class Interpreter:
         #print(state)
         #print(new_state, rule)
         while True:
-            state = self.apply_rule(state)
+            state, rule = self.apply_rule(state)
+            print(f"{rule}: {state}")
             if isinstance(state, FinalState):
                 break
             #breakpoint()
@@ -69,18 +73,19 @@ class Interpreter:
     def apply_rule(self, state: State):
         for rule in self.rules:
             if rule.applicable(state):
-                print(rule)
+                self.sequence.add(state, rule)
                 new_state = rule.apply(state)
-                print(new_state)
-                return new_state
+                self.sequence.add_after(new_state)
+                return new_state, rule
         else:
             # Stuck
             print("Stuck state reached")
             raise EmptyInputException()
 
 if __name__ == "__main__":
-    #i = "a"
-    #program = "++>,<[->+<]>."
+    i = "a"
+    program = "++>,<[->+<]>."
     #program = "[<->]+"
-    program = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
-    Interpreter(program)
+    #program = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
+    ip = Interpreter(program, i)
+    breakpoint()
