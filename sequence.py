@@ -40,4 +40,4 @@ class Sequence:
         if self.last_step:
             self.last_step.after = state
     
-    def output(self)
+    
