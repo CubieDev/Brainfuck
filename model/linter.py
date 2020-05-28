@@ -21,7 +21,7 @@ class Linter():
     def run_linter(self):
         self.flags = self.check_bracket_placement()
         self.flags = self.check_unnecessary_loop()
-        return "OK" if self.flags==0 else ("Illegal brackets" if self.flags==1 else ("Redundant loop" if self.flags==2 else "Illegal brackets and redundant loop"))
+        return "OK" if self.flags==0 else ("Redundant loop" if self.flags==1 else ("Illegal brackets" if self.flags==2 else "Illegal brackets, redundant loop"))
     
     def check_unnecessary_loop(self):
         """Checks whether a loop is irrelevant"""

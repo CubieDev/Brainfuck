@@ -15,6 +15,8 @@ class MikTex():
     """Statically processes all variables required to spawn a child process for miktex"""
 
     _engine = "pdflatex"
+    _template = "template.tex"
+    _silentmode = "--interaction=batchmode"
     _path = environ['PATH'].split(';')
     _exec = "{0}{1}".format(_engine,".exe") if ("win" in platform) else (_engine if ("linux" in platform) else "")
     mikTexPath = r""
@@ -35,6 +37,17 @@ class MikTex():
 
     if not os.path.exists(wdir):
         raise DirectoryNotFound(f"Directory {wdir} could not be located")
+
+    @staticmethod
+    def write_to_pdf(stats="", prooftree="", progname="helloworld", sequence=""):
+        source = ""
+        target = f"{''.join(progname.split()).lower()}.tex"
+        with open(os.path.join(MikTex.wdir, MikTex._template), 'r') as temp:
+            source = temp.read().replace('[progname]', progname).replace('[stats]', stats).replace('[tree]', prooftree).replace('[sequence]', sequence)
+        with open(os.path.join(MikTex.wdir, target), 'w') as temp:
+            temp.write(source)
+        mikTexThread = subprocess.Popen([MikTex._engine, MikTex._silentmode, target], cwd=MikTex.wdir)
+        mikTexThread.wait()
 
     # mikTexThread = subprocess.Popen([_engine, "test.tex"], cwd=wdir)
     # mikTexThread.wait()

@@ -28,19 +28,22 @@ class State(Configuration):
         # TODO: Change array representation
         return "\sosfive{" + str(self.s) + "}{" + str(dict(self.a)).replace("{", "\{").replace("}", "\}") + "}{" + str(self.p) + "}{" + repr(self.i) + "}{" + repr(self.o) +"}"
 
+
 class FinalState(Configuration):
-    def __init__(self, a: Array, p: Pointer, i: Input, o: Output):
+    #Added ERR state as final state
+    def __init__(self, a: Array= {}, p: Pointer = 0, i: Input = '', o: Output = '', err: bool = False):
         super().__init__()
         self.a = a
         self.p = p
         self.i = i
         self.o = o
+        self.err = err
     
     def unpack(self) -> (Array, Pointer, Input, Output):
         return self.a, self.p, self.i, self.o
 
     def __repr__(self):
-        return f"({dict(self.a)} | {self.p} | {repr(self.i)} | {repr(self.o)})"
+        return (f"({dict(self.a)} | {self.p} | {repr(self.i)} | {repr(self.o)})" if not self.err else "(STUCK_STATE)")+r"_{final}"
     
     def tex(self) -> str:
         # TODO: Change array representation

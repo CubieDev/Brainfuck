@@ -1,14 +1,16 @@
 
 from constants import Statement, Array, Pointer, Input, Output
 from configurations import State, FinalState
-from rules import Axiom, Rule, Base
+from rules import Axiom, Rule, Base, Error
 
+
+class PropagateException(Exception):
+    pass
 # S_1S_2 -> S_1'S_2
 # S_1S_2 -> S_2
 # Note that we can combine CompOne and CompTwo into one rule Comp and on the fly decide
 # which one the two should be applied.
 class Comp(Rule):
-
     class CompOne(Rule):
         def __init__(self):
             super().__init__()
@@ -72,10 +74,15 @@ class Comp(Rule):
         # Split the statement into two separate statements
         s1 = s[:index]
         s2 = s[index:]
-
+        print("Applying comp")
         # Get the new state from applying a rule
-        new_state, rule = self.interpreter.apply_rule(State(s1, a, p, i, o))
+        try:
+            new_state, rule = self.interpreter.apply_rule(State(s1, a, p, i, o))
+        except:
+            return FinalState(err=True), Error()
+            
         self.interpreter.sequence.add_nested(state, rule, new_state)
+        
         if isinstance(new_state, State):
             # If the new state is not final, then we append the remaining statement
             # back to statement s2

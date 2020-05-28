@@ -40,6 +40,9 @@ class Sequence:
         self.steps.append(step)
         #self.last_step = step
     
+    def length(self):
+        return len(self.steps)
+
     def add_nested(self, before: State, rule: Base, after: Union[State, FinalState]):
         self.steps[-1].nested = Step(before, rule, after)
 
@@ -49,9 +52,15 @@ class Sequence:
         self.steps[-1].after = after
         self.steps[-1].rule = rule
 
+#TODO: This must really be fixed and moved to an extern template file
     def output(self):
+        """
+        Captures the trees and configuration chain in a string
+        """
         tree = ""
-        for step in self.steps:
+        configSeq = ""
+        print(self.steps)
+        for c, step in enumerate(self.steps):
             # Note that / will be replaced with \ and < and > are replaced with { and } respectively.
             tree += f"""
 /begin«prooftree»
@@ -65,10 +74,13 @@ class Sequence:
   »''' if step.nested else '«»'}
 /end«prooftree»//
             """
-            
+            configSeq += f"""{'/Rightarrow' if not c==0 else ''} {step.before.tex()} {f'/Rightarrow {step.after.tex()}' if c==(len(self.steps)-1) else ''}"""
+        configSeq = configSeq.replace("/", "\\")
+        configSeq = '$' + configSeq + '$'
         tree = tree.replace("/", "\\")
         tree = tree.replace("«", "{")
         tree = tree.replace("»", "}")
-        breakpoint()
-        with open("test.txt", "w") as f:
-            f.write(tree)
+        #breakpoint()
+        # with open("test.txt", "w") as f:
+        #     f.write(configSeq)
+        return tree, configSeq

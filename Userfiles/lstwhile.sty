@@ -1,0 +1,61 @@
+%\RequirePackage{listingsutf8} % gives problems with subimport*...
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+\RequirePackage{etoolbox}
+
+
+% lstlisting coq style (inspired from a file of Assia Mahboubi)
+%
+\definecolor{ltblue}{rgb}{0,0.4,0.4}
+\definecolor{dkblue}{rgb}{0,0.1,0.6}
+\definecolor{dkgreen}{rgb}{0,0.35,0}
+\definecolor{dkviolet}{rgb}{0.3,0,0.5}
+\definecolor{dkred}{rgb}{0.5,0,0}
+%\newcommand\code[1]{{\tt\small #1}}
+\newcommand\codeg[1]{{\color{dkgreen}\texttt{#1}}}
+\newcommand\code[1]{{\color{black}\texttt{#1}}}
+%
+\definecolor{rured}{rgb}{0.745 0.192 0.102}
+\lstdefinelanguage{while}[ANSI]{C}%
+{
+escapeinside={(*@}{@*)},
+mathescape=true,
+keepspaces=true,
+morekeywords={fi,then,and,or,to,begin,var,proc,is,call,end,skip,true,false,repeat,until,break,try,catch,throw,chooseordie,unless},
+identifierstyle={\color{rured}},
+keywordstyle={\bfseries\color{black}},
+basicstyle=\normalsize\ttfamily,%
+extendedchars=true,
+inputencoding=utf8,
+literate=
+    {*}{{$\star$}}1
+    {<=}{{$\leq$}}1
+    %{~}{{$\neg$}}1
+    {!}{{$\neg$}}1
+    {||}{{$\parallel$}}1
+    {&&}{{$\&\&$}}1
+    {\/\\}{{$\land$}}1
+    %{||}{{\mbox{$\parallel$}}}{2}%%
+}[keywords,comments,strings]%
+
+\def\whilecode{\lstinline[mathescape,language=while, basicstyle=\normalsize\ttfamily]}
+\def\whilecodesize#1#2{\lstinline[mathescape,language=while, basicstyle=#2\ttfamily]{#1}}
+
+\expandafter\patchcmd\csname \string\lstinline\endcsname{%
+  \leavevmode
+  \bgroup
+}{%
+  \leavevmode
+  \ifmmode\hbox\fi
+  \bgroup
+}{}{%
+  \typeout{Patching of \string\lstinline\space failed!}%
+}
+
+\lstnewenvironment{lstwhile}{\lstset{language=while}}{}
+% pour inliner dans le texte
+\def\whilee{\lstinline[language=while, basicstyle=\normalsize]}
+% pour inliner dans les tableaux / displaymath...
+\def\whilees{\lstinline[language=while, basicstyle=\scriptsize]}
+\def\whilein{\lstinline[language=while]}
+\endinput

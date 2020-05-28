@@ -1,20 +1,42 @@
 \documentclass{article}
+\usepackage{prooftree}
+\usepackage{scdefspub}
+\usepackage{lstwhile}
+
+\newcommand{\sosfour}[4]{\ensuremath{({#1} \mid {#2} \mid {#3} \mid {#4})}}
+\newcommand{\sosfive}[5]{\ensuremath{({#1} \mid {#2} \mid {#3} \mid {#4} \mid {#5})}}
+\newcommand{\sossix}[6]{\ensuremath{({#1} \mid {#2} \mid {#3} \mid {#4} \mid {#5} \mid {#6})}}
+\newcommand{\plussos}{\code{+}_\code{sos}}
+\newcommand{\minussos}{\code{-}_\code{sos}}
+\newcommand{\leftsos}{\code{<}_\code{sos}}
+\newcommand{\rightsos}{\code{>}_\code{sos}}
+\newcommand{\dotsos}{\code{.}_\code{sos}}
+\newcommand{\commasos}{\code{,}_\code{sos}}
+\newcommand{\tcommasos}{\code{,}\blacksquare_\code{sos}}
+%\newcommand{\comptonesos}{\code{comp}^{1\blacksquare}_\code{sos}}
+\newcommand{\componesos}{\code{comp}^{1}_\code{sos}}
+%\newcommand{\compttwosos}{\code{comp}^{2\blacksquare}_\code{sos}}
+\newcommand{\comptwosos}{\code{comp}^{2}_\code{sos}}
+\newcommand{\emptyloopsos}{\code{[0]}_\code{sos}}
+%\newcommand{\tloopsos}{\code{[n}\blacksquare\code{]}_\code{sos}}
+\newcommand{\loopsos}{\code{[n}\code{]}_\code{sos}}
+
 
 \begin{document}
 
-\title{Proof for someidentifier}
-\author{Compiler name perhaps?}
+\title{Proof for [progname]}
+\author{Tom \& Piep's proof interpreter}
 
 \maketitle
 
 \section{Proof}
 \subsection{Proof statistics}
-Add statistics about proof? Rules used, steps used, time to compile?
+[stats]
 
-\subsection{Deriviation sequence}
-The sequence here?
+\subsection{Configuration sequence}
+[sequence]
 
-\subsection{Errors?}
-Perhaps log encountered errors here?
+\subsection{Full proof tree}
+[tree]
 
 \end{document}

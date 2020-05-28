@@ -1,0 +1,160 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{scdefspub}[2019/11/15 v1.0]
+
+\RequirePackage[total={442pt,665pt},marginparwidth=54pt,marginparsep=10pt,top=0.95in]{geometry} % For getting more text on a page
+\RequirePackage{prooftree} % For creating the trees
+\RequirePackage{lstwhile} % For pretty printing While code
+\RequirePackage{multicol} % For multicolumns
+\RequirePackage{graphicx} % For resizing of boxes
+\RequirePackage{adjustbox} % For diagonal boxes
+\RequirePackage{caption} % For better captions with the diagonal boxes
+\RequirePackage{xspace} % For autmatically adding spaces when needed
+\RequirePackage{tikz} % For drawing the upside-down trapeziums
+\usetikzlibrary{shapes} % Otherwise tikz doesn't know what a trapezium is
+
+% Configurations and transitions
+\newcommand{\conf}[2]{\ensuremath{\langle{#1},{#2}\rangle}}
+% In some combinations with verbatim it looks like the
+% \ensuremath{ ... } mixes things up, therefore there is also a version
+% without this part.
+\newcommand{\conflst}[2]{{\langle{#1},{#2}\rangle}}
+
+% For normal transitions in ns
+\newcommand{\nstrans}[3]{\ensuremath{\conf{#1}{#2} \rightarrow {#3}}}
+\newcommand{\nstranslst}[3]{\langle{#1},{#2}\rangle \rightarrow {#3}}
+
+% For ns transitions of variable declarations needed with blocks and procedures.
+\newcommand{\dtrans}[3]{\ensuremath{\conf{#1}{#2} \rightarrow_{D} {#3}}}
+
+% For ns transitions including an environment as needed with blocks and
+% procedures.
+% For historical reasons there are two equivalent commands.
+\newcommand{\nstransenv}[4]{\nstransv{#1}{#2}{#3}{#4}}
+\newcommand{\nstransv}[4]{\ensuremath{{#1} \vdash \conf{#2}{#3} \rightarrow {#4}}}
+
+% For extended ns as needed in Semantics and Rewriting
+\newcommand{\nstransa}[4]{\ensuremath{\conf{#1}{#2} \rightarrow ({#3},{#4})}}
+
+% For sos transitions going to a final state.
+\newcommand{\sostransd}[3]{\ensuremath{\conf{#1}{#2} \Rightarrow {#3}}}
+% For sos transitions going to a non-final state.
+\newcommand{\sostransv}[4]{\ensuremath{\conf{#1}{#2} \Rightarrow \conf{#3}{#4}}}
+
+% For numbered sos transitions.
+\newcommand{\sostransdk}[4]{\ensuremath{\conf{#1}{#2} \Rightarrow^{#4} {#3}}}
+\newcommand{\sostransvk}[5]{\ensuremath{\conf{#1}{#2} \Rightarrow^{#5} \conf{#3}{#4}}}
+\newcommand{\sostransdster}[3]{\sostransdk{#1}{#2}{#3}{*}}
+\newcommand{\sostransvster}[4]{\sostransdk{#1}{#2}{#3}{#4}{*}}
+
+
+% Shortcuts for trees.
+\newcommand{\sctree}[4][0.08em]{%
+{#4}
+\thickness=#1\justifies
+{#2}
+\using{#3}
+}
+
+% A tree as premise:
+\newcommand{\scpremisetree}[3]{%
+\[
+  \sctree{#1}{#2}{#3}
+\]
+}
+
+% A leaf as premise:
+\newcommand{\scpremiseleaf}[2]{%
+\[
+  \sctree[0px]{#1}{#2}{}
+\]
+}
+% And something to put the names of axioms at the proper place.
+\newcommand{\axiomrule}[1]{\thickness=0em\using{#1}\justifies}
+\newcommand{\justifiesrule}[1]{\using{#1}\justifies}
+
+% This command creates a trapezoid with a label and a variable width
+% as optional parameter.
+\newcommand{\sctrap}[2][1cm]{
+\begin{tikzpicture}%
+\node[xshift=2cm,yshift=-3cm,draw,trapezium,text width=#1,align=center,shape border rotate=180]{#2};%
+\end{tikzpicture}%
+\vspace*{-0.10cm}%
+}
+% I left out the color, because the color I used is printed as black which
+% makes the label unreadable.
+%
+% And a smaller variant
+\newcommand{\sctrapsmall}[2][1cm]{
+\resizebox{!}{0.7\baselineskip}{\sctrap[#1]{#2}}
+}
+
+
+% Rule names ns Table 2.1
+\newcommand{\rnsass}{\left[\mbox{ass}_{\mbox{ns}}\right]}
+\newcommand{\rnsskip}{\left[\mbox{skip}_{\mbox{ns}}\right]}
+\newcommand{\rnscomp}{\left[\mbox{comp}_{\mbox{ns}}\right]}
+\newcommand{\rnsiftt}{\left[\mbox{if}_{\mbox{ns}}^{\mbox{\stt}}\right]}
+\newcommand{\rnsifff}{\left[\mbox{if}_{\mbox{ns}}^{\mbox{\sff}}\right]}
+\newcommand{\rnswhilett}{\left[\mbox{while}_{\mbox{ns}}^{\mbox{\stt}}\right]}
+\newcommand{\rnswhileff}{\left[\mbox{while}_{\mbox{ns}}^{\mbox{\sff}}\right]}
+
+% Rule names sos Table 2.2
+\newcommand{\rsosass}{\left[\mbox{ass}_{\mbox{sos}}\right]}
+\newcommand{\rsosskip}{\left[\mbox{skip}_{\mbox{sos}}\right]}
+\newcommand{\rsoscompI}{\left[\mbox{comp}_{\mbox{sos}}^{1}\right]}
+\newcommand{\rsoscompII}{\left[\mbox{comp}_{\mbox{sos}}^{2}\right]}
+\newcommand{\rsosiftt}{\left[\mbox{if}_{\mbox{sos}}^{\mbox{\stt}}\right]}
+\newcommand{\rsosifff}{\left[\mbox{if}_{\mbox{sos}}^{\mbox{\sff}}\right]}
+\newcommand{\rsoswhile}{\left[\mbox{while}_{\mbox{sos}}\right]}
+
+% Rule names p Table 6.1
+\newcommand{\rpass}{\left[\mbox{ass}_{\mbox{p}}\right]}
+\newcommand{\rpskip}{\left[\mbox{skip}_{\mbox{p}}\right]}
+\newcommand{\rpcomp}{\left[\mbox{comp}_{\mbox{p}}\right]}
+\newcommand{\rpif}{\left[\mbox{if}_{\mbox{p}}\right]}
+\newcommand{\rpwhile}{\left[\mbox{while}_{\mbox{p}}\right]}
+\newcommand{\rpcons}{\left[\mbox{cons}_{\mbox{p}}\right]}
+
+% For bold booleans:
+\newcommand{\stt}{\mbox{\bfseries tt}}
+\newcommand{\sff}{\mbox{\bfseries ff}}
+
+% For bold integers
+\newcommand{\zz}[1]{\ensuremath{\mathbf{#1}}}
+% For states with 1, 2 or 3 variables included.
+\newcommand{\sI}[1]{s_{#1}}
+\newcommand{\sII}[2]{s_{#1,#2}}
+\newcommand{\sIII}[3]{s_{#1,#2,#3}}
+\newcommand{\svalue}[2]{{#1}\sspace{#2}}
+\newcommand{\sIzero}{\sI{\zz{0}}}
+\newcommand{\sIone}{\sI{\zz{1}}}
+\newcommand{\sItwo}{\sI{\zz{2}}}
+\newcommand{\sIthree}{\sI{\zz{3}}}
+\newcommand{\sIminusone}{\sI{\zz{-1}}}
+\newcommand{\sIminustwo}{\sI{\zz{-2}}}
+\newcommand{\sIminusthree}{\sI{\zz{-3}}}
+
+\newcommand{\myleaf}[2]{%
+\[
+\thickness=0em\using{#2}\justifies{#1}
+\]
+}
+
+% For axiomatic semantics
+\newcommand{\psq}[3]{\{#1\}\espace #2 \espace \{#3\}}
+
+% Some general commands
+\newcommand{\espace}{\hspace*{0.2cm}}
+\newcommand{\sspace}{\hspace*{0.1cm}}
+\newcommand{\mwhile}{{\bf While}\xspace}
+\newcommand{\mwhileplus}{{\bf While}$^{+}$\xspace}
+
+% Haskell's concatenation sign
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+% Black circle with white fill
+\newcommand{\tikzcircle}[2][black,fill=white]{\tikz[baseline=-0.5ex]\draw[#1,radius=#2] (0,0) circle ;}%
+
+\endinput
+

@@ -8,6 +8,13 @@ class Model():
         self.linter=Linter()
         self.errors = StringVar()
         self.maxsteps = IntVar()
+        self.input = StringVar()
+        self.name = StringVar()
+        self.name.set("Hello world!")
         self.maxsteps.set(1000)
         self.errors.set("Not checked")
         self.interpreter = Interpreter()
+
+        self.proofstats = "" #stats formatted as string
+        self.proofseq = ""
+        self.prooftree = ""
