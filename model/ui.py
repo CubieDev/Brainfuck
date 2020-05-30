@@ -64,7 +64,11 @@ class Controller:
     @staticmethod
     def run_interpreter():
         prog = view.proginput.get("1.0",END)
-        view.model.proofstats = ""
+        view.model.prooffound = ""
+        view.model.stepstaken = ""
+        view.model.proctime = ""
+        view.model.rulesused = ""
+        view.model.prooftree = ""
         view.model.proofseq = ""
         view.model.prooftree = ""
         rulec = {}
@@ -73,19 +77,28 @@ class Controller:
         time = 0.0
         view.model.interpreter.initialize(prog, input=view.model.input.get())
         rulec, steps, finished, time = view.model.interpreter.run_interpreter(view.model.maxsteps.get())
-        view.model.proofstats = fr"""Proof found? : {finished}\\Steps taken : {steps}\\Processing time(in seconds) : {time}\\Rules used:\\"""
+        #view.model.proofstats = fr"""Proof found? : {finished}\\Steps taken : {steps}\\Processing time(in seconds) : {time}\\Rules used:\\"""
+        view.model.prooffound = finished
+        view.model.stepstaken = steps
+        view.model.proctime = time
         for rule, count in rulec.items():
-            view.model.proofstats += (fr"{rule} : {count}\\")
+            view.model.rulesused += (fr"{rule} & {count}\\ \hline")
         view.model.prooftree, view.model.proofseq = view.model.interpreter.sequence.output()
         view.model.errors.set("Proof found!" if finished else "Proof failed!")       
         
     @staticmethod
     def proof_to_pdf():
-        if view.model.proofstats == "":
+        if view.model.prooffound == "":
             view.model.errors.set("Please run interpreter")
             return
         view.model.errors.set("Please stand by...")   
-        MikTex.write_to_pdf(stats=view.model.proofstats, prooftree=view.model.prooftree, progname=view.model.name.get(), sequence=view.model.proofseq)
+        MikTex.write_to_pdf(prooffound=view.model.prooffound, 
+                            stepstaken=view.model.stepstaken, 
+                            proctime=view.model.proctime, 
+                            rulesused=view.model.rulesused, 
+                            prooftree=view.model.prooftree, 
+                            progname=view.model.name.get(), 
+                            sequence=view.model.proofseq)
         view.model.errors.set("Proof pdf completed")
 
     @staticmethod

@@ -19,6 +19,8 @@ class Left(Axiom):
         
         # Unpack the state
         s, a, p, i, o = state.unpack()
+        # Copy the array to avoid impacting the old state
+        a = a.copy()
         # Apply the Left rule by decrementing data pointer
         p -= 1
         # Return a FinalState with the correct information

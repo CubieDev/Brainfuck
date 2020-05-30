@@ -19,6 +19,8 @@ class Dot(Axiom):
         
         # Unpack the state
         s, a, p, i, o = state.unpack()
+        # Copy the array to avoid impacting the old state
+        a = a.copy()
         # Apply the Dot rule by adding the char version of the currently
         # pointed at value to the output
         o += chr(a[p])

@@ -39,14 +39,16 @@ class Interpreter():
             Comp(self) # Composition takes an instance of Interpreter as it will want to execute a rule.
         ]
         self.rulecount = {
-            '{Right}':0,
-            '{Left}':0,
-            '{Plus}':0,
-            '{Minus}':0,
-            '{Dot}':0,
-            '{Comma}':0,
-            '{Loop}':0,
-            '{Comp}':0
+            Right().tex(): 0,
+            Left().tex(): 0,
+            Plus().tex(): 0,
+            Minus().tex(): 0,
+            Dot().tex(): 0,
+            Comma().tex(): 0,
+            Loop.LoopBody().tex():0,
+            Loop.LoopEnd().tex():0,
+            Comp.CompOne().tex():0,
+            Comp.CompTwo().tex():0
         }
         self.sequence = Sequence()
         # Strip the program of characters that aren't in the language
@@ -71,15 +73,17 @@ class Interpreter():
 
         self.s = re.sub("[^\<\>\,\.\[\]\-\+]", "", program)
 
-        self.rulecount = { #Reset rulecount
-            '{Right}':0,
-            '{Left}':0,
-            '{Plus}':0,
-            '{Minus}':0,
-            '{Dot}':0,
-            '{Comma}':0,
-            '{Loop}':0,
-            '{Comp}':0
+        self.rulecount = { # Reset rulecount
+            Right().tex(): 0,
+            Left().tex(): 0,
+            Plus().tex(): 0,
+            Minus().tex(): 0,
+            Dot().tex(): 0,
+            Comma().tex(): 0,
+            Loop.LoopBody().tex():0,
+            Loop.LoopEnd().tex():0,
+            Comp.CompOne().tex():0,
+            Comp.CompTwo().tex():0
         }
         # Initialize state variables
         a = defaultdict(lambda: 0)
@@ -96,7 +100,7 @@ class Interpreter():
                     if c >= max:
                         return self.rulecount, c, False, (datetime.datetime.now() - now).total_seconds()
                     print(c)
-        except:
+        except EmptyInputException:
             self.sequence.add(FinalState(err=True))
             self.sequence.add_after(FinalState(err=True), Error())
             return self.rulecount, c, False, (datetime.datetime.now() - now).total_seconds()
@@ -119,10 +123,10 @@ class Interpreter():
     def apply_rule(self, state: State, new = False) -> (Union[State, FinalState], Base):
         for rule in self.rules:
             if rule.applicable(state):
-                self.rulecount[str(rule)] += 1
                 if new:
                     self.sequence.add(state)
                 new_state, applied_rule = rule.apply(state)
+                self.rulecount[applied_rule.tex()] += 1
                 return new_state, applied_rule
         else:
             # Stuck

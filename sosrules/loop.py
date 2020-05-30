@@ -25,6 +25,8 @@ class Loop(Base):
 
             # Unpack the information from the given state
             s, a, p, i, o = state.unpack()
+            # Copy the array to avoid impacting the old state
+            a = a.copy()
             # And create a FinalState with these state values
             return FinalState(a, p, i, o), self
 
@@ -48,6 +50,8 @@ class Loop(Base):
 
             # Unpack the information from the given state
             s, a, p, i, o = state.unpack()
+            # Copy the array to avoid impacting the old state
+            a = a.copy()
             # And create a State by prepending S to the [S]. 
             # We can do this by slicing off the first and last index from s
             s = s[1:-1] + s

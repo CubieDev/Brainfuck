@@ -18,6 +18,8 @@ class Comma(Axiom):
 
         # Unpack the state
         s, a, p, i, o = state.unpack()
+        # Copy the array to avoid impacting the old state
+        a = a.copy()
         # Apply the Comma rule by setting the currently pointed to value to 
         # the ordinal value corresponding to the first input character
         # and then updating i to remove this first character.

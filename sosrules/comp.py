@@ -54,6 +54,8 @@ class Comp(Rule):
 
         # Unpack the state values
         s, a, p, i, o = state.unpack()
+        # Copy the array to avoid impacting the old state
+        a = a.copy()
         # Get first legal statement
         index = 1
         if s[0] == "[":
@@ -74,24 +76,24 @@ class Comp(Rule):
         # Split the statement into two separate statements
         s1 = s[:index]
         s2 = s[index:]
-        print("Applying comp")
         # Get the new state from applying a rule
+        before_state = State(s1, a, p, i, o)
         try:
-            new_state, rule = self.interpreter.apply_rule(State(s1, a, p, i, o))
+            after_state, rule = self.interpreter.apply_rule(before_state)
         except:
             return FinalState(err=True), Error()
             
-        self.interpreter.sequence.add_nested(state, rule, new_state)
+        self.interpreter.sequence.add_nested(before_state, rule, after_state)
         
-        if isinstance(new_state, State):
+        if isinstance(after_state, State):
             # If the new state is not final, then we append the remaining statement
             # back to statement s2
-            ns, na, np, ni, no = new_state.unpack()
+            ns, na, np, ni, no = after_state.unpack()
             s2 = ns + s2
             return State(s2, na, np, ni, no), self.co
             
         else:
-            na, np, ni, no = new_state.unpack()
+            na, np, ni, no = after_state.unpack()
             # Otherwise, we simply keep s2 and use the new state values
             return State(s2, na, np, ni, no), self.ct
 

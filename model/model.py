@@ -15,6 +15,11 @@ class Model():
         self.errors.set("Not checked")
         self.interpreter = Interpreter()
 
-        self.proofstats = "" #stats formatted as string
+        # Proof stats
+        self.prooffound = ""
+        self.stepstaken = ""
+        self.proctime = ""
+        self.rulesused = ""
+
         self.proofseq = ""
         self.prooftree = ""

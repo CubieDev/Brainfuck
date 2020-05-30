@@ -8,9 +8,12 @@ class Step:
     # TODO: Check whether before can be final
     def __init__(self, before: State, rule: Base = None, after: Union[State, FinalState] = None):
         super().__init__()
-        self.before = before
+        self.before = before.copy()
         self.rule = rule
-        self.after = after
+        if after:
+            self.after = after.copy()
+        else:
+            self.after = after
 
         self.nested = None
 
@@ -57,9 +60,8 @@ class Sequence:
         """
         Captures the trees and configuration chain in a string
         """
-        tree = "" #TODO: Check whether we can use "/tiny//" instead.
+        tree = ""
         configSeq = ""
-        print(self.steps)
         for c, step in enumerate(self.steps):
             # Note that / will be replaced with \ and < and > are replaced with { and } respectively.
             tree += f"""
@@ -72,7 +74,7 @@ class Sequence:
       «{step.nested.before.tex()} /Rightarrow {step.nested.after.tex()}»%
       «{step.nested.rule.tex()}»%
   »''' if step.nested else '«»'}
-/end«prooftree»
+/end«prooftree»//
 /noindent"""
             configSeq += f"""{'/Rightarrow//' if not c==0 else ''} {step.before.tex()} {f'/Rightarrow// {step.after.tex()}' if c==(len(self.steps)-1) else ''}"""
         configSeq = configSeq.replace("/", "\\")
@@ -80,7 +82,6 @@ class Sequence:
         tree = tree.replace("/", "\\")
         tree = tree.replace("«", "{")
         tree = tree.replace("»", "}")
-        #breakpoint()
         # with open("test.txt", "w") as f:
         #     f.write(configSeq)
         return tree, configSeq
