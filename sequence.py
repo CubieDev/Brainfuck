@@ -57,7 +57,7 @@ class Sequence:
         """
         Captures the trees and configuration chain in a string
         """
-        tree = ""
+        tree = "" #TODO: Check whether we can use "/tiny//" instead.
         configSeq = ""
         print(self.steps)
         for c, step in enumerate(self.steps):
@@ -72,9 +72,9 @@ class Sequence:
       «{step.nested.before.tex()} /Rightarrow {step.nested.after.tex()}»%
       «{step.nested.rule.tex()}»%
   »''' if step.nested else '«»'}
-/end«prooftree»//
-            """
-            configSeq += f"""{'/Rightarrow' if not c==0 else ''} {step.before.tex()} {f'/Rightarrow {step.after.tex()}' if c==(len(self.steps)-1) else ''}"""
+/end«prooftree»
+/noindent"""
+            configSeq += f"""{'/Rightarrow//' if not c==0 else ''} {step.before.tex()} {f'/Rightarrow// {step.after.tex()}' if c==(len(self.steps)-1) else ''}"""
         configSeq = configSeq.replace("/", "\\")
         configSeq = '$' + configSeq + '$'
         tree = tree.replace("/", "\\")
