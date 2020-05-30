@@ -27,7 +27,7 @@ class MikTex():
     root = pathlib.Path(__file__).parent.absolute().parent.absolute()
     wdir = os.path.join(root, "Userfiles")
 
-    #TODO: Potentially allow user to pick miktex installation
+    #TODO: Potentially allow user to pick miktex installation?
     if (len(mikTexPaths) >= 1):
         mikTexPath = os.path.join(mikTexPaths[0], _exec)
         if not os.path.exists(mikTexPath):
@@ -48,8 +48,4 @@ class MikTex():
             temp.write(source)
         mikTexThread = subprocess.Popen([MikTex._engine, MikTex._silentmode, target], cwd=MikTex.wdir)
         mikTexThread.wait()
-
-    # mikTexThread = subprocess.Popen([_engine, "test.tex"], cwd=wdir)
-    # mikTexThread.wait()
-# print(wdir)
 

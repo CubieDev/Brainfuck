@@ -33,15 +33,8 @@ class Sequence:
         self.steps = []
     
     def add(self, before: State):
-        
         step = Step(before)
-        # If the previous rule was a Comp rule, we want to absorb 
-        # this step as a nested step into that step, instead of adding it as a new step.
-        #if self.last_step and isinstance(self.last_step.rule, Comp):
-        #    self.steps[-1].nested = step
-        #else:
         self.steps.append(step)
-        #self.last_step = step
     
     def length(self):
         return len(self.steps)
@@ -51,11 +44,10 @@ class Sequence:
 
     def add_after(self, after: Union[State, FinalState], rule: Base, ):
         # TODO: See if it's possible to not have to do this afterward
-        #if self.last_step:
         self.steps[-1].after = after
         self.steps[-1].rule = rule
 
-#TODO: This must really be fixed and moved to an extern template file
+#TODO: This must really be fixed and moved to an external template file
     def output(self):
         """
         Captures the trees and configuration chain in a string
@@ -64,6 +56,7 @@ class Sequence:
         configSeq = ""
         for c, step in enumerate(self.steps):
             # Note that / will be replaced with \ and < and > are replaced with { and } respectively.
+
             tree += f"""
 /begin«prooftree»
 /sctree%
@@ -82,6 +75,4 @@ class Sequence:
         tree = tree.replace("/", "\\")
         tree = tree.replace("«", "{")
         tree = tree.replace("»", "}")
-        # with open("test.txt", "w") as f:
-        #     f.write(configSeq)
         return tree, configSeq

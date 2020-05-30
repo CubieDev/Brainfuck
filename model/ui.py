@@ -78,7 +78,6 @@ class Controller:
         time = 0.0
         view.model.interpreter.initialize(prog, input=view.model.input.get())
         rulec, steps, finished, time = view.model.interpreter.run_interpreter(view.model.maxsteps.get())
-        #view.model.proofstats = fr"""Proof found? : {finished}\\Steps taken : {steps}\\Processing time(in seconds) : {time}\\Rules used:\\"""
         view.model.prooffound = finished
         view.model.stepstaken = steps
         view.model.proctime = time

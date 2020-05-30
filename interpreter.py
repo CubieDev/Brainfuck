@@ -51,7 +51,6 @@ class Interpreter():
             Comp.CompTwo().tex():0
         }
         self.sequence = Sequence()
-        # Strip the program of characters that aren't in the language
         self.s = re.sub("[^\<\>\,\.\[\]\-\+]", "", s)
 
         # Initialize state variables
@@ -64,7 +63,6 @@ class Interpreter():
         if(len(self.s) > 0):
             self.parse(self.initial_state)
     
-    #TODO: fix this
     def initialize(self, program, input=""):
         if not isinstance(program, Statement):
             raise TypeError("Program must be passed as a str object.")
@@ -108,9 +106,6 @@ class Interpreter():
         return self.rulecount, c, True, (datetime.datetime.now() - now).total_seconds()
 
     def parse(self, state: State):
-        # For now this only applies one rule
-        #print(state)
-        #print(new_state, rule)
         while True:
             state, rule = self.apply_rule(state, new=True)
             self.sequence.add_after(state, rule)
@@ -118,7 +113,6 @@ class Interpreter():
                 break
             else: 
                 yield "non final"
-            #breakpoint()
     
     def apply_rule(self, state: State, new = False) -> (Union[State, FinalState], Base):
         for rule in self.rules:
@@ -131,19 +125,3 @@ class Interpreter():
         else:
             # Stuck
             raise EmptyInputException("Stuck state reached")
-
-# if __name__ == "__main__":
-#     i = ""
-#     #program = "++>,<[->+<]>."
-#     #program = ","
-#     #program = "[<->]+"
-#     program = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++"
-#     ip = Interpreter()
-#     ip.initialize(program,i)
-#     rulec, c, final, time = ip.run_interpreter()
-#     _, seq = ip.sequence.output()
-#     print(time.total_seconds())
-#     print(final)
-#     print(c)
-#     print(rulec)
-#     #breakpoint()
