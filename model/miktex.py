@@ -39,11 +39,11 @@ class MikTex():
         raise DirectoryNotFound(f"Directory {wdir} could not be located")
 
     @staticmethod
-    def write_to_pdf(prooffound="False", stepstaken="0", proctime="", rulesused="", prooftree="", progname="helloworld", sequence=""):
+    def write_to_pdf(program="", prooffound="False", stepstaken="0", proctime="", rulesused="", prooftree="", progname="helloworld", sequence=""):
         source = ""
         target = f"{''.join(progname.split()).lower()}.tex"
         with open(os.path.join(MikTex.wdir, MikTex._template), 'r') as temp:
-            source = temp.read().replace('[progname]', progname).replace('[prooffound]', str(prooffound)).replace("[stepstaken]", str(stepstaken)).replace('[proctime]', str(proctime)).replace('[rulesused]', rulesused).replace('[tree]', prooftree).replace('[sequence]', sequence)
+            source = temp.read().replace('[program]', program).replace('[progname]', progname).replace('[prooffound]', str(prooffound)).replace("[stepstaken]", str(stepstaken)).replace('[proctime]', str(proctime)).replace('[rulesused]', rulesused).replace('[tree]', prooftree).replace('[sequence]', sequence)
         with open(os.path.join(MikTex.wdir, target), 'w') as temp:
             temp.write(source)
         mikTexThread = subprocess.Popen([MikTex._engine, MikTex._silentmode, target], cwd=MikTex.wdir)

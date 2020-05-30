@@ -15,6 +15,8 @@ class Model():
         self.errors.set("Not checked")
         self.interpreter = Interpreter()
 
+        self.program = ""
+        
         # Proof stats
         self.prooffound = ""
         self.stepstaken = ""

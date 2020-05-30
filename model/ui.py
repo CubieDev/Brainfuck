@@ -64,6 +64,7 @@ class Controller:
     @staticmethod
     def run_interpreter():
         prog = view.proginput.get("1.0",END)
+        view.model.program = prog
         view.model.prooffound = ""
         view.model.stepstaken = ""
         view.model.proctime = ""
@@ -92,7 +93,8 @@ class Controller:
             view.model.errors.set("Please run interpreter")
             return
         view.model.errors.set("Please stand by...")   
-        MikTex.write_to_pdf(prooffound=view.model.prooffound, 
+        MikTex.write_to_pdf(program=view.model.program,
+                            prooffound=view.model.prooffound, 
                             stepstaken=view.model.stepstaken, 
                             proctime=view.model.proctime, 
                             rulesused=view.model.rulesused, 
