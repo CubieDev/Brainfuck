@@ -82,7 +82,7 @@ class Controller:
         view.model.stepstaken = steps
         view.model.proctime = time
         for rule, count in rulec.items():
-            view.model.rulesused += (fr"{rule} & {count}\\ \hline")
+            view.model.rulesused += (fr"${rule}$ & {count}\\ \hline")
         view.model.prooftree, view.model.proofseq = view.model.interpreter.sequence.output()
         view.model.errors.set("Proof found!" if finished else "Proof failed!")       
         
