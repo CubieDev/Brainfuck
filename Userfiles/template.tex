@@ -3,9 +3,11 @@
 \usepackage{scdefspub}
 \usepackage{lstwhile}
 
-\newcommand{\sosfour}[4]{\ensuremath{({#1} \mid {#2} \mid {#3} \mid {#4})}}
-\newcommand{\sosfive}[5]{\ensuremath{({#1} \mid {#2} \mid {#3} \mid {#4} \mid {#5})}}
-\newcommand{\sossix}[6]{\ensuremath{({#1} \mid {#2} \mid {#3} \mid {#4} \mid {#5} \mid {#6})}}
+\usepackage{pdflscape}
+
+\newcommand{\sosfour}[4]{\ensuremath{(\code{#1} \mid {#2} \mid \code{#3} \mid \code{#4})}}
+\newcommand{\sosfive}[5]{\ensuremath{(\code{#1} \mid \code{#2} \mid \code{#3} \mid \code{#4} \mid \code{#5})}}
+\newcommand{\sossix}[6]{\ensuremath{(\code{#1} \mid \code{#2} \mid \code{#3} \mid \code{#4} \mid \code{#5} \mid \code{#6})}}
 \newcommand{\plussos}{\code{+}_\code{sos}}
 \newcommand{\minussos}{\code{-}_\code{sos}}
 \newcommand{\leftsos}{\code{<}_\code{sos}}
@@ -31,12 +33,24 @@
 
 \section{Proof}
 \subsection{Proof statistics}
-[stats]
+\code{
+\begin{tabular}{|l|l|} \hline
+Proof found? & [prooffound] \\ \hline
+Steps taken & [stepstaken]\\ \hline
+Processing time(in seconds) & [proctime]\\ \hline
+\multicolumn{2}{|c|}{Rules used:}\\ \hline
+[rulesused]
+\end{tabular}
+}
 
+\begin{landscape}
 \subsection{Configuration sequence}
 [sequence]
 
 \subsection{Full proof tree}
+\scriptsize{
 [tree]
+}
+\end{landscape}
 
 \end{document}
