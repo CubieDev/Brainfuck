@@ -64,7 +64,7 @@ class Controller:
     @staticmethod
     def run_interpreter():
         prog = view.proginput.get("1.0",END)
-        view.model.program = prog
+        view.model.program = prog.replace("\r\n", "\n")
         view.model.prooffound = ""
         view.model.stepstaken = ""
         view.model.proctime = ""
@@ -76,7 +76,7 @@ class Controller:
         steps = 0
         finished = False
         time = 0.0
-        view.model.interpreter.initialize(prog, input=view.model.input.get())
+        view.model.interpreter.initialize(prog, inp = view.model.input.get())
         rulec, steps, finished, time = view.model.interpreter.run_interpreter(view.model.maxsteps.get())
         view.model.prooffound = finished
         view.model.stepstaken = steps
@@ -112,7 +112,6 @@ class Controller:
     def reformat():
         Controller.flatten()
         code = view.proginput.get("1.0",END)
-        print(code)
         prev = ""
         ilevel = 0
         identfactor = 3

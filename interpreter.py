@@ -63,7 +63,7 @@ class Interpreter():
         if(len(self.s) > 0):
             self.parse(self.initial_state)
     
-    def initialize(self, program, input=""):
+    def initialize(self, program, inp = ""):
         if not isinstance(program, Statement):
             raise TypeError("Program must be passed as a str object.")
         if not isinstance(program, Input):
@@ -87,7 +87,7 @@ class Interpreter():
         a = defaultdict(lambda: 0)
         p = 0
         o = ""
-        self.initial_state = State(self.s, a, p, input, o)
+        self.initial_state = State(self.s, a, p, inp, o)
 
     def run_interpreter(self, max=100000):
         now = datetime.datetime.now()
@@ -97,7 +97,6 @@ class Interpreter():
                 for c, _ in enumerate(self.parse(self.initial_state)):
                     if c >= max:
                         return self.rulecount, c, False, (datetime.datetime.now() - now).total_seconds()
-                    print(c)
         except EmptyInputException:
             self.sequence.add(FinalState(err=True))
             self.sequence.add_after(FinalState(err=True), Error())

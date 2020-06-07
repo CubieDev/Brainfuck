@@ -25,7 +25,7 @@ class State(Configuration):
         return f"({self.s} | {dict(self.a)} | {self.p} | {repr(self.i)} | {repr(self.o)})"
 
     def tex(self) -> str:
-        return "\sosfive{" + str(self.s) + "}{" + str({key: value for key, value in self.a.items() if value != 0}).replace("{", "\{").replace("}", "\}").replace(": ", ":") + "}{" + str(self.p) + "}{" + repr(self.i) + "}{" + repr(self.o) +"}"
+        return "\sosfive{" + str(self.s) + "}{" + str({key: value for key, value in self.a.items() if value != 0}).replace("{", "\{").replace("}", "\}").replace(": ", ":") + "}{" + str(self.p) + "}{`" + repr(self.i)[1:] + "}{`" + repr(self.o)[1:] +"}"
 
     def copy(self):
         return State(self.s, self.a.copy(), self.p, self.i, self.o)
@@ -46,7 +46,7 @@ class FinalState(Configuration):
         return (f"({dict(self.a)} | {self.p} | {repr(self.i)} | {repr(self.o)})" if not self.err else "(STUCK_STATE)")+r"_{final}"
     
     def tex(self) -> str:
-        return "\sosfour{" + str({key: value for key, value in self.a.items() if key != 0}).replace("{", "\{").replace("}", "\}").replace(": ", ":") + "}{" + str(self.p) + "}{" + repr(self.i) + "}{" + repr(self.o) +"}"
+        return "\sosfour{" + str({key: value for key, value in self.a.items() if key != 0}).replace("{", "\{").replace("}", "\}").replace(": ", ":") + "}{" + str(self.p) + "}{`" + repr(self.i)[1:] + "}{`" + repr(self.o)[1:] +"}"
 
     def copy(self):
         return FinalState(self.a.copy(), self.p, self.i, self.o)

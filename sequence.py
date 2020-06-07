@@ -59,7 +59,7 @@ class Sequence:
 
             tree += f"""
 /begin«prooftree»
-/sctree%
+/sctree{"[0px]" if not step.nested else "%"}
   «{step.before.tex()} /Rightarrow {step.after.tex()}»%
   «{step.rule.tex()}»%
   {f'''  «
@@ -69,7 +69,7 @@ class Sequence:
   »''' if step.nested else '«»'}
 /end«prooftree»//
 /noindent"""
-            configSeq += f"""{'/Rightarrow//' if not c==0 else ''} {step.before.tex()} {f'/Rightarrow// {step.after.tex()}' if c==(len(self.steps)-1) else ''}"""
+            configSeq += f"""{'/Rightarrow//' if not c == 0 else ''} {step.before.tex()} {f'/Rightarrow// {step.after.tex()}' if c==(len(self.steps)-1) else ''}"""
         configSeq = configSeq.replace("/", "\\")
         configSeq = '$' + configSeq + '$'
         tree = tree.replace("/", "\\")
